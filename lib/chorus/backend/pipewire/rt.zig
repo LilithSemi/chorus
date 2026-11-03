@@ -39,7 +39,8 @@ const Failure = error{
     OutOfMemory,
 };
 
-/// Makes the thread with kernel id `tid` realtime (SCHED_FIFO | SCHED_RESET_ON_FORK).
+/// Makes the thread with kernel id `tid` realtime with SCHED_RESET_ON_FORK set. The direct
+/// path sets SCHED_FIFO. RTKit sets SCHED_RR.
 /// Tries sched_setscheduler first, then RTKit MakeThreadRealtimeWithPID on the system bus.
 /// This call blocks. Each blocking step of the bus connect and its handshake can wait one
 /// second in dbus.zig, so run it on a helper thread, never on the app thread. After the
@@ -468,11 +469,15 @@ fn liveCase() !void {
     }
     const tid = sleeper.waitTid();
     const result = promote(testing.allocator, iot.io(), tid, .{});
-    if (result == .failed) return error.SkipZigTest;
-    try testing.expectEqual(@as(usize, 1 | reset_on_fork), linux.sched_getscheduler(tid));
+    const policy: usize = switch (result) {
+        .failed => return error.SkipZigTest,
+        .direct => @intFromEnum(linux.SCHED.Mode.FIFO),
+        .rtkit => @intFromEnum(linux.SCHED.Mode.RR),
+    };
+    try testing.expectEqual(policy | reset_on_fork, linux.sched_getscheduler(tid));
 }
 
-test "promote makes a fresh thread SCHED_FIFO" {
+test "promote makes a fresh thread realtime" {
     try inChild(liveCase);
 }
 
