@@ -471,8 +471,8 @@ fn liveCase() !void {
     const result = promote(testing.allocator, iot.io(), tid, .{});
     const policy: usize = switch (result) {
         .failed => return error.SkipZigTest,
-        .direct => @intFromEnum(linux.SCHED.Mode.FIFO),
-        .rtkit => @intFromEnum(linux.SCHED.Mode.RR),
+        .direct => @backingInt(linux.SCHED.Mode.FIFO),
+        .rtkit => @backingInt(linux.SCHED.Mode.RR),
     };
     try testing.expectEqual(policy | reset_on_fork, linux.sched_getscheduler(tid));
 }
