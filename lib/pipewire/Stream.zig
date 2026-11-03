@@ -2970,7 +2970,9 @@ test "a failed core error send is counted" {
     const text: [200]u8 = @splat('x');
     var sent: usize = 0;
     while (h.stream.stats.send_failures.load(.monotonic) == 0 and sent < 1000) : (sent += 1) {
+        // A grow can remap in place and never allocate, so a resize must fail too.
         failing.fail_index = failing.alloc_index;
+        failing.resize_fail_index = failing.resize_index;
         h.stream.sendCoreError(einval, &text);
     }
     try testing.expectEqual(@as(u32, 1), h.stream.stats.send_failures.load(.monotonic));
