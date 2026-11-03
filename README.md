@@ -24,6 +24,18 @@ while (running) _ = try ctx.dispatch();
 
 When `dispatch` gives `.disconnected`, call `ctx.reconnect()`. On the web a closed `AudioContext` gives `.disconnected` once, and `reconnect` makes a new one and starts the streams that ran.
 
+### Try it
+
+`chorus-play` plays a file, or a 2 s tone when you give no file. Use it to check by ear that audio works.
+
+```sh
+zig build play -- song.ogg
+zig build play -- --backend null --gain 0.5 song.wav
+zig-out/bin/chorus-play --list
+```
+
+`--list` shows the backend and the endpoints. Other options are `--backend`, `--device`, `--gain` and `--loop`. The program prints a warning when the backend is the null backend, because then you hear nothing.
+
 ### Play sounds
 
 `Player` mixes sounds on one playback stream. `load` decodes a short sound into memory, and `stream` decodes a long file while it plays.

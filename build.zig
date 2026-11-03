@@ -111,6 +111,8 @@ pub fn build(b: *std.Build) void {
         }
     }
 
+    if (!web_enabled and !chorus_object) addPlay(b, chorus, codec, target, optimize, chorus_libc);
+
     const lib = b.addLibrary(.{ .name = "chorus", .root_module = chorus, .linkage = .static });
     // The web-check exe is the build check for the web target. An app takes the chorus module, not the archive.
     if (!web_enabled) b.installArtifact(lib);
@@ -118,6 +120,35 @@ pub fn build(b: *std.Build) void {
         b.getInstallStep().dependOn(step);
         test_step.dependOn(step);
     }
+}
+
+/// The chorus-play program, to check by ear that audio works.
+fn addPlay(
+    b: *std.Build,
+    chorus: *std.Build.Module,
+    codec: *std.Build.Module,
+    target: std.Build.ResolvedTarget,
+    optimize: std.builtin.OptimizeMode,
+    libc_file: ?std.Build.LazyPath,
+) void {
+    const exe = b.addExecutable(.{
+        .name = "chorus-play",
+        .root_module = b.createModule(.{
+            .root_source_file = b.path("tools/chorus-play.zig"),
+            .target = target,
+            .optimize = optimize,
+            .imports = &.{
+                .{ .name = "chorus", .module = chorus },
+                .{ .name = "codec", .module = codec },
+            },
+        }),
+    });
+    if (libc_file) |file| exe.setLibCFile(file);
+    b.installArtifact(exe);
+    const run = b.addRunArtifact(exe);
+    run.addPassthruArgs();
+    const step = b.step("play", "Run chorus-play, pass the arguments after --");
+    step.dependOn(&run.step);
 }
 
 /// An exe that makes the compiler analyze the real web table. The Zig test runner cannot build
