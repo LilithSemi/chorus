@@ -1,0 +1,50 @@
+//! SILK: static tables, NLSF and LPC code, excitation decoding, the decoder and the encoder.
+pub const macros = @import("silk/macros.zig");
+pub const tables = @import("silk/tables.zig");
+pub const lpc = @import("silk/lpc.zig");
+pub const nlsf = @import("silk/nlsf.zig");
+pub const excitation = @import("silk/excitation.zig");
+pub const pitch = @import("silk/pitch.zig");
+pub const stereo = @import("silk/stereo.zig");
+pub const resampler = @import("silk/resampler.zig");
+pub const plc = @import("silk/plc.zig");
+pub const decode = @import("silk/decode.zig");
+pub const enc_tables = @import("silk/enc_tables.zig");
+pub const flp = @import("silk/flp.zig");
+pub const enc_state = @import("silk/enc_state.zig");
+pub const enc_resampler = @import("silk/enc_resampler.zig");
+pub const vad = @import("silk/vad.zig");
+pub const pitch_enc = @import("silk/pitch_enc.zig");
+pub const nlsf_enc = @import("silk/nlsf_enc.zig");
+pub const pred_enc = @import("silk/pred_enc.zig");
+pub const shape_enc = @import("silk/shape_enc.zig");
+pub const nsq = @import("silk/nsq.zig");
+pub const indices_enc = @import("silk/indices_enc.zig");
+pub const stereo_enc = @import("silk/stereo_enc.zig");
+pub const encode = @import("silk/encode.zig");
+
+test {
+    _ = macros;
+    _ = tables;
+    _ = lpc;
+    _ = nlsf;
+    _ = excitation;
+    _ = pitch;
+    _ = stereo;
+    _ = resampler;
+    _ = plc;
+    _ = decode;
+    _ = enc_tables;
+    _ = flp;
+    _ = enc_state;
+    _ = enc_resampler;
+    _ = vad;
+    _ = pitch_enc;
+    _ = nlsf_enc;
+    _ = pred_enc;
+    _ = shape_enc;
+    _ = nsq;
+    _ = indices_enc;
+    _ = stereo_enc;
+    _ = encode;
+}

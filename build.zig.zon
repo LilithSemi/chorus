@@ -1,0 +1,29 @@
+.{
+    .name = .chorus,
+    .version = "0.1.0",
+    .fingerprint = 0x39941685cc18d5a8,
+    .minimum_zig_version = "0.17.0",
+    .dependencies = .{
+        .dbus = .{
+            .url = "git+https://git.lilithsemi.com/LilithSemi/dbus.zig#23989f41a3190b4173b81a3c8ba8030a7eb61884",
+            .hash = "dbus-0.1.0-8F4MwHVMBAA2AzGOmKrYnylsJ3tw00VSbw0dcmD6MhvE",
+        },
+        .webidl = .{
+            .url = "git+https://git.lilithsemi.com/LilithSemi/webidl.zig#068966e4408c2e6f61dfc6b894b8431abbe81ee5",
+            .hash = "webidl_zig-0.1.0-FrIyV4ARBwDm9n_tOpop47X8vgsc-rZlldhnsVKfgy2A",
+        },
+        .opus_vectors = .{
+            .url = "https://opus-codec.org/static/testvectors/opus_testvectors-rfc8251.tar.gz",
+            .hash = "N-V-__8AACqUjAdg4sxN-o9dXvUrygKYbLcTpoqhWHiTDI77",
+        },
+    },
+    .paths = .{
+        "build.zig",
+        "build.zig.zon",
+        "web",
+        "lib",
+        "LICENSE",
+        "LICENSE-libopus",
+        "README.md",
+    },
+}
